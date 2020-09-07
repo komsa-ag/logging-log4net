@@ -474,6 +474,8 @@ namespace log4net.Appender
 			/// <returns></returns>
 			protected Stream CreateStream(string filename, bool append, FileShare fileShare)
 			{
+				// @@done - JFri - Umgebungsvariablen ersetzen
+				filename = Environment.ExpandEnvironmentVariables(filename);
 				using (CurrentAppender.SecurityContext.Impersonate(this))
 				{
 					// Ensure that the directory structure exists
@@ -508,6 +510,104 @@ namespace log4net.Appender
 		}
 
 		/// <summary>
+		/// Hold no lock on the output file
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Open the file once and hold it open until <see cref="CloseFile"/> is called. 
+		/// Maintains an no lock on the file during this time.
+		/// </para>
+		/// </remarks>
+		public class NoLock : LockingModelBase
+		{
+			private Stream m_stream = null;
+
+			/// <summary>
+			/// Open the file specified and prepare for logging.
+			/// </summary>
+			/// <param name="filename">The filename to use</param>
+			/// <param name="append">Whether to append to the file, or overwrite</param>
+			/// <param name="encoding">The encoding to use</param>
+			/// <remarks>
+			/// <para>
+			/// Open the file specified and prepare for logging. 
+			/// No writes will be made until <see cref="AcquireLock"/> is called.
+			/// Must be called before any calls to <see cref="AcquireLock"/>,
+			/// <see cref="ReleaseLock"/> and <see cref="CloseFile"/>.
+			/// </para>
+			/// </remarks>
+			public override void OpenFile(string filename, bool append, Encoding encoding)
+			{
+				try
+				{
+					// @@done - JFri - keine exklusive Schreibsperre
+					m_stream = CreateStream(filename, append, FileShare.ReadWrite);
+				}
+				catch (Exception e1)
+				{
+					CurrentAppender.ErrorHandler.Error("Unable to acquire lock on file " + filename + ". " + e1.Message);
+				}
+			}
+
+			/// <summary>
+			/// Close the file
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// Close the file. No further writes will be made.
+			/// </para>
+			/// </remarks>
+			public override void CloseFile()
+			{
+				CloseStream(m_stream);
+				m_stream = null;
+			}
+
+			/// <summary>
+			/// Acquire the lock on the file
+			/// </summary>
+			/// <returns>A stream that is ready to be written to.</returns>
+			/// <remarks>
+			/// <para>
+			/// Does nothing. The lock is already taken
+			/// </para>
+			/// </remarks>
+			public override Stream AcquireLock()
+			{
+				return m_stream;
+			}
+
+			/// <summary>
+			/// Release the lock on the file
+			/// </summary>
+			/// <remarks>
+			/// <para>
+			/// Does nothing. The lock will be released when the file is closed.
+			/// </para>
+			/// </remarks>
+			public override void ReleaseLock()
+			{
+				//NOP
+			}
+
+			/// <summary>
+			/// Initializes all resources used by this locking model.
+			/// </summary>
+			public override void ActivateOptions()
+			{
+				//NOP
+			}
+
+			/// <summary>
+			/// Disposes all resources that were initialized by this locking model.
+			/// </summary>
+			public override void OnClose()
+			{
+				//NOP
+			}
+		}
+
+		/// <summary>
 		/// Hold an exclusive lock on the output file
 		/// </summary>
 		/// <remarks>
@@ -516,7 +616,7 @@ namespace log4net.Appender
 		/// Maintains an exclusive lock on the file during this time.
 		/// </para>
 		/// </remarks>
-		public class ExclusiveLock : LockingModelBase
+		public class ExclusiveLock : NoLock { } /* @@done - JFri - map to NoLock
 		{
 			private Stream m_stream = null;
 
@@ -602,7 +702,7 @@ namespace log4net.Appender
 			{
 				//NOP
 			}
-		}
+		}*/
 
 		/// <summary>
 		/// Acquires the file lock for each write
@@ -615,7 +715,7 @@ namespace log4net.Appender
 		/// other processes to move/delete the log file whilst logging continues.
 		/// </para>
 		/// </remarks>
-		public class MinimalLock : LockingModelBase
+		public class MinimalLock : NoLock { }/* @@done - JFri - map to NoLock
 		{
 			private string m_filename;
 			private bool m_append;
@@ -712,7 +812,7 @@ namespace log4net.Appender
 			{
 				//NOP
 			}
-		}
+		}*/
 
 #if !NETCF
 		/// <summary>
