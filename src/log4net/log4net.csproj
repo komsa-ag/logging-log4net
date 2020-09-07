@@ -31,7 +31,7 @@
     <PackageId>Komsa.log4net</PackageId>
     <Description>Komsa log4net</Description>
     <PackageTags>Komsa log4net</PackageTags>
-    <VersionPrefix>2.0.9.14</VersionPrefix>
+    <VersionPrefix>2.0.9.15</VersionPrefix>
     <Authors>Apache, KOMSA AG</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NoPackageAnalysis>true</NoPackageAnalysis>
