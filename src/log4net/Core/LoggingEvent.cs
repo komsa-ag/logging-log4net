@@ -663,7 +663,7 @@ namespace log4net.Core
     public object MessageObject
     {
       get { return m_message; }
-      set { m_message = value; }
+      protected set { m_message = value; }
     }
 
     /// <summary>
@@ -1299,7 +1299,7 @@ namespace log4net.Core
     /// It is not possible to 'unfix' a field.
     /// </para>
     /// </remarks>
-    protected void FixVolatileData(FixFlags flags)
+    protected virtual void FixVolatileData(FixFlags flags)
     {
       object forceCreation = null;
 
