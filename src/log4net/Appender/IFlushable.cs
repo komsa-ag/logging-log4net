@@ -18,7 +18,7 @@
 #endregion
 
 using System;
-
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
 namespace log4net.Appender
 {
     /// <summary>

@@ -29,36 +29,37 @@ using System.Security;
 using System.Threading;
 #endif
 
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
 namespace log4net.Util
 {
-	/// <summary>
-	/// Implementation of Properties collection for the <see cref="log4net.LogicalThreadContext"/>
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Class implements a collection of properties that is specific to each thread.
-	/// The class is not synchronized as each thread has its own <see cref="PropertiesDictionary"/>.
-	/// </para>
-	/// <para>
-	/// This class stores its properties in a slot on the <see cref="CallContext"/> named
-	/// <c>log4net.Util.LogicalThreadContextProperties</c>.
-	/// </para>
-	/// <para>
-	/// For .NET Standard 1.3 this class uses
-	/// System.Threading.AsyncLocal rather than <see
-	/// cref="System.Runtime.Remoting.Messaging.CallContext"/>.
-	/// </para>
-	/// <para>
-	/// The <see cref="CallContext"/> requires a link time 
-	/// <see cref="System.Security.Permissions.SecurityPermission"/> for the
-	/// <see cref="System.Security.Permissions.SecurityPermissionFlag.Infrastructure"/>.
-	/// If the calling code does not have this permission then this context will be disabled.
-	/// It will not store any property values set on it.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	public sealed class LogicalThreadContextProperties : ContextPropertiesBase
-	{
+  /// <summary>
+  /// Implementation of Properties collection for the <see cref="log4net.LogicalThreadContext"/>
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// Class implements a collection of properties that is specific to each thread.
+  /// The class is not synchronized as each thread has its own <see cref="PropertiesDictionary"/>.
+  /// </para>
+  /// <para>
+  /// This class stores its properties in a slot on the <see cref="CallContext"/> named
+  /// <c>log4net.Util.LogicalThreadContextProperties</c>.
+  /// </para>
+  /// <para>
+  /// For .NET Standard 1.3 this class uses
+  /// System.Threading.AsyncLocal rather than <see
+  /// cref="System.Runtime.Remoting.Messaging.CallContext"/>.
+  /// </para>
+  /// <para>
+  /// The <see cref="CallContext"/> requires a link time 
+  /// <see cref="System.Security.Permissions.SecurityPermission"/> for the
+  /// <see cref="System.Security.Permissions.SecurityPermissionFlag.Infrastructure"/>.
+  /// If the calling code does not have this permission then this context will be disabled.
+  /// It will not store any property values set on it.
+  /// </para>
+  /// </remarks>
+  /// <author>Nicko Cadell</author>
+  public sealed class LogicalThreadContextProperties : ContextPropertiesBase
+  {
 #if NETSTANDARD
 		private static readonly AsyncLocal<PropertiesDictionary> AsyncLocalDictionary = new AsyncLocal<PropertiesDictionary>();
 #else
