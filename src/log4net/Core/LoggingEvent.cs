@@ -727,7 +727,7 @@ namespace log4net.Core
     /// The collected information is cached for future use.
     /// </para>
     /// </remarks>
-    public string RenderedMessage
+    public virtual string RenderedMessage
     {
       get 
       { 
@@ -768,7 +768,7 @@ namespace log4net.Core
     /// to be accessed multiple times then the property will be more efficient.
     /// </para>
     /// </remarks>
-    public void WriteRenderedMessage(TextWriter writer)
+    public virtual void WriteRenderedMessage(TextWriter writer)
     {
       if (m_data.Message != null)
       {
