@@ -31,6 +31,9 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  <PropertyGroup>
     <ProjectGuid>{181FE707-E161-4722-9F38-6AAAB6FAA106}</ProjectGuid>
     <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
@@ -103,4 +106,13 @@
     <None Remove="AssemblyVersionInfo.js" />
     <None Remove="AssemblyVersionInfo.vb" />
   </ItemGroup>
+
+  <Target Name="_ResolveCopyLocalNuGetPackagePdbsAndXml" Condition="$(CopyLocalLockFileAssemblies) == true" AfterTargets="ResolveReferences">
+    <!-- "Workaround" for missing '.pdb'-Files from NuGet Packages -->
+    <!-- https://github.com/dotnet/sdk/issues/1458#issuecomment-420456386 -->
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).pdb')"/>
+      <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).xml')"/>
+    </ItemGroup>
+  </Target>
 </Project>
