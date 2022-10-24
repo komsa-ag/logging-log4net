@@ -264,7 +264,7 @@ namespace log4net.Appender
 			}
 			return null;
 		}
-  
+	
 		#endregion Implementation of IAppenderAttachable
 
 		#region Private Instance Fields

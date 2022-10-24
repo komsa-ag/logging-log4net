@@ -190,7 +190,7 @@ namespace log4net.Appender
 			get { return m_subject; }
 			set { m_subject = value; }
 		}
-  
+	
 		/// <summary>
 		/// Gets or sets the name of the SMTP relay mail server to use to send 
 		/// the e-mail messages.
