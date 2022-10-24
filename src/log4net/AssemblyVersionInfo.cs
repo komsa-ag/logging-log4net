@@ -32,7 +32,7 @@
 
 #if !NETCF
 #if !SSCLI
-[assembly: System.Reflection.AssemblyFileVersion("2.0.15.0")]
+[assembly: System.Reflection.AssemblyFileVersion("2.0.15.2")]
 #endif
 #endif
 
