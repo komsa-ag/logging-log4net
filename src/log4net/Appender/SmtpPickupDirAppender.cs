@@ -119,7 +119,7 @@ namespace log4net.Appender
 			get { return m_subject; }
 			set { m_subject = value; }
 		}
-  
+	
 		/// <summary>
 		/// Gets or sets the path to write the messages to.
 		/// </summary>
@@ -135,7 +135,7 @@ namespace log4net.Appender
 			set { m_pickupDir = value; }
 		}
 
- 		/// <summary>
+		/// <summary>
 		/// Gets or sets the file extension for the generated files
 		/// </summary>
 		/// <value>

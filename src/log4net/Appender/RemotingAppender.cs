@@ -139,9 +139,9 @@ namespace log4net.Appender
 		/// </para>
 		/// </remarks>
 #if NET_4_0 || MONO_4_0
-        [System.Security.SecuritySafeCritical]
+				[System.Security.SecuritySafeCritical]
 #endif
-        public override void ActivateOptions() 
+				public override void ActivateOptions() 
 		{
 			base.ActivateOptions();
 
